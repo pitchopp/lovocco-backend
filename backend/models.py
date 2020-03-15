@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import BooleanField, CharField, ForeignKey, DateField, TextField, IntegerField, OneToOneField, \
@@ -25,17 +27,21 @@ def get_image_path(instance, filename):
 
 
 class Lover(models.Model):
+    user = OneToOneField(User, on_delete=models.CASCADE)
     configured = BooleanField(default=False)
-    name = CharField(max_length=50, null=True)
-    description = TextField(null=True)
+    name = CharField(max_length=50)
     city = ForeignKey(City, on_delete=models.SET_NULL, related_name='+', null=True)
     gender = ForeignKey(Gender, on_delete=models.SET_NULL, related_name='+', null=True)
-    birth_date = DateField(null=True)
+    birth_date = DateField()
+    description = TextField(null=True, blank=True)
     target_gender = ForeignKey(Gender, on_delete=models.SET_NULL, related_name='+', null=True)
     age_min = IntegerField(default=18, null=True)
     age_max = IntegerField(default=60, null=True)
-    user = OneToOneField(User, on_delete=models.CASCADE)
     likes = ManyToManyField('self', related_name='likers')
+
+    def get_age(self):
+        today = datetime.today()
+        return today.year - self.birth_date.year - ((today.month, today.day) < (self.birth_date.month, self.birth_date.day))
 
     def __str__(self):
         return str(self.user)
