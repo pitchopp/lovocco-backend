@@ -19,7 +19,7 @@ from backend import views
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('api/admin', admin.site.urls),
     path('api/lovers/me', views.my_profile),
     # Authentication
     path('api/authenticate', obtain_auth_token),
