@@ -75,7 +75,8 @@ def register_user(request):
             {"username": "Veuillez choisir un identifiant"},
             status=status.HTTP_400_BAD_REQUEST
         )
-    elif User.objects.filter(username=username).exists():
+    username = username.lower().replace(' ', '')
+    if User.objects.filter(username=username).exists():
         return JsonResponse(
             {"username": "Ce pseudo n'est pas disponible"},
             status=status.HTTP_400_BAD_REQUEST
@@ -89,10 +90,10 @@ def register_user(request):
     gender = body.get('gender')
     if gender is None:
         return JsonResponse(
-            {"gender": "Veuillez saisir un sexe"},
+            {"gender": "Veuillez indiquer votre sexe"},
             statuts=status.HTTP_400_BAD_REQUEST
         )
-    elif gender not in Gender.objects.all().values_list('code', flat=True):
+    elif Gender.objects.filter(id=gender).exists():
         return JsonResponse(
             {"gender": "Le sexe choisi est ambigu"},
             status=status.HTTP_400_BAD_REQUEST
