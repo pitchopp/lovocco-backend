@@ -37,7 +37,7 @@ class LoverSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lover
-        fields = 'name', 'description', 'birth_date', 'gender', 'city', 'target_gender', 'age_min', 'age_max', 'photos', 'age'
+        fields = 'id', 'name', 'description', 'birth_date', 'gender', 'city', 'target_gender', 'age_min', 'age_max', 'photos', 'age'
 
     def get_age(self, obj: Lover):
         return obj.get_age()

@@ -232,6 +232,16 @@ def like(request, lover_id):
     return JsonResponse({"status": "ok"})
 
 
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
+def dislike(request, lover_id):
+    user = get_authenticated_user(request)
+    lover = get_or_create_lover(user)
+    lover.dislikes.add(lover_id)
+    return JsonResponse({"status": "ok"})
+
+
 @api_view(['GET'])
 @authentication_classes((TokenAuthentication,))
 @permission_classes((IsAuthenticated,))

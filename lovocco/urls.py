@@ -25,6 +25,7 @@ urlpatterns = [
     path('api/lovers/me', views.my_profile),
     path('api/lovers/candidates', views.candidates),
     path('api/lovers/<int:lover_id>/like', views.like),
+    path('api/lovers/<int:lover_id>/dislike', views.dislike),
     # Authentication
     path('api/authenticate', obtain_auth_token),
     path('api/register', views.register_user)
