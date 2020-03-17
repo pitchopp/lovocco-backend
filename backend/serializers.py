@@ -36,4 +36,4 @@ class LoverSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lover
-        fields = '__all__'
+        fields = 'name', 'description', 'birthdate', 'gender', 'city', 'target_gender', 'age_min', 'age_max', 'photos'
