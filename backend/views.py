@@ -105,10 +105,22 @@ def my_profile(request):
                 {"city": "Ville invalide"},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        target_gender = body.get('target_gender')
+        if target_gender in [None, '']:
+            return JsonResponse(
+                {"gender": "Veuillez indiquer votre orientation sexuelle"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        try:
+            target_gender = Gender.objects.get(pk=target_gender)
+        except Gender.DoesNotExist:
+            return JsonResponse(
+                {"target_gender": "Le sexe choisi est ambigu"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         description = body.get('description')
         age_min = body.get('age_min')
         age_max = body.get('age_max')
-        target_gender = body.get('target_gender')
 
         # update lover
         lover.name = name
