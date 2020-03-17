@@ -31,9 +31,9 @@ class LoverSerializer(serializers.ModelSerializer):
     city = CitySerializer()
     gender = GenderSerializer()
     target_gender = GenderSerializer()
-    user = UserSerializer()
+    # user = UserSerializer()
     photos = PhotoSerializer(many=True)
 
     class Meta:
         model = Lover
-        fields = 'name', 'description', 'birthdate', 'gender', 'city', 'target_gender', 'age_min', 'age_max', 'photos'
+        fields = 'name', 'description', 'birth_date', 'gender', 'city', 'target_gender', 'age_min', 'age_max', 'photos'
