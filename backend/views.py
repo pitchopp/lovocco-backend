@@ -91,7 +91,7 @@ def register_user(request):
     if gender in [None, '']:
         return JsonResponse(
             {"gender": "Veuillez indiquer votre sexe"},
-            statuts=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST
         )
     elif not Gender.objects.filter(id=gender).exists():
         return JsonResponse(
@@ -102,7 +102,7 @@ def register_user(request):
     if email in [None, '']:
         return JsonResponse(
             {"email": "Veuillez saisir une adresse email"},
-            statuts=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST
         )
     elif User.objects.filter(email=email).exists():
         return JsonResponse(
@@ -113,13 +113,13 @@ def register_user(request):
     if password in [None, '']:
         return JsonResponse(
             {"password": "Veuillez saisir un mot de passe"},
-            statuts=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST
         )
     birthdate = body.get("birthdate")
     if birthdate in [None, '']:
         return JsonResponse(
             {"birthdate": "Veuillez saisir une date de naissance"},
-            statuts=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST
         )
     city = body.get('city')
     if city in [None, '']:
@@ -132,7 +132,7 @@ def register_user(request):
     except City.DoesNotExist:
         return JsonResponse(
             {"city": "Ville invalide"},
-            statuts=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST
         )
 
     user = User(
