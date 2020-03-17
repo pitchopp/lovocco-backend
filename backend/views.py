@@ -39,7 +39,7 @@ def get_or_create_lover(user: User) -> Lover:
         lover = user.lover
     except Lover.DoesNotExist:
         data = user.last_name.split(';')
-        gender = Gender.objects.get(code=data[0])
+        gender = Gender.objects.get(pk=int(data[0]))
         city = data[2]
         birthdate = datetime.strptime(data[1], '%Y-%m-%d')
         lover = Lover(
@@ -70,7 +70,12 @@ def my_profile(request):
 def register_user(request):
     body = get_body(request)
     username = body.get('username')
-    if User.objects.filter(username=username).exists():
+    if username is None:
+        return JsonResponse(
+            {"username": "Veuillez choisir un identifiant"},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    elif User.objects.filter(username=username).exists():
         return JsonResponse(
             {"username": "Ce pseudo n'est pas disponible"},
             status=status.HTTP_400_BAD_REQUEST
@@ -133,7 +138,7 @@ def register_user(request):
         username=username,
         email=email,
         first_name=name,
-        last_name='%s;%s;%s' % (gender, birthdate, str(city)),
+        last_name='%s;%s;%s' % (str(gender), birthdate, str(city)),
         is_active=True,
         is_staff=False,
         is_superuser=False
@@ -142,7 +147,8 @@ def register_user(request):
     user.set_password(password)
     user.save()
     get_or_create_lover(user)
-    return JsonResponse(UserSerializer(user).data, safe=False)
+    token = Token.objects.get_or_create(user=user)
+    return JsonResponse({'token': token.key}, safe=False)
 
 
 @api_view(['POST'])
