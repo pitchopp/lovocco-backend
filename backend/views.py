@@ -49,7 +49,7 @@ def get_or_create_lover(user: User) -> Lover:
             city_id=int(city),
             birth_date=birthdate,
         )
-        lover.target_gender = Gender.objects.exclude(code=data[0]).first()
+        lover.target_gender = Gender.objects.exclude(id=gender.id).first()
         age = lover.get_age()
         lover.age_min = max(age - 3, 18)
         lover.age_max = age + 3
