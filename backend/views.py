@@ -148,7 +148,7 @@ def register_user(request):
     user.set_password(password)
     user.save()
     get_or_create_lover(user)
-    token = Token.objects.get_or_create(user=user)
+    token, created = Token.objects.get_or_create(user=user)
     return JsonResponse({'token': token.key}, safe=False)
 
 
