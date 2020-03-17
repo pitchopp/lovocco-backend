@@ -20,6 +20,8 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('api/admin', admin.site.urls),
+    path('api/genders', views.genders),
+    path('api/citys', views.cities),
     path('api/lovers/me', views.my_profile),
     path('api/lovers/candidates', views.candidates),
     path('api/lovers/<int:lover_id>/like', views.like),

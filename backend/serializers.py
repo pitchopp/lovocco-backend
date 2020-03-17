@@ -6,13 +6,13 @@ from backend.models import Lover, City, Gender, Photo
 class CitySerializer(serializers.ModelSerializer):
     class Meta:
         model = City
-        fields = 'name',
+        fields = 'id', 'name'
 
 
 class GenderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gender
-        fields = 'code', 'label'
+        fields = 'id', 'code', 'label'
 
 
 class UserSerializer(serializers.ModelSerializer):

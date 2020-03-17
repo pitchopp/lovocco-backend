@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from backend.models import Lover, Gender, City
-from backend.serializers import LoverSerializer, UserSerializer
+from backend.serializers import LoverSerializer, UserSerializer, CitySerializer, GenderSerializer
 
 
 def get_body(request) -> dict:
@@ -176,3 +176,17 @@ def candidates(request):
         age_max__gte=age,
     ).exclude(id=lover.id).exclude(id__in=[o.id for o in lover.likes.all()])
     return JsonResponse(LoverSerializer(possible_candidates, many=True).data, safe=False)
+
+
+@api_view(['GET'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
+def cities(request):
+    return JsonResponse(CitySerializer(City.objects.all(), many=True).data, safe=False)
+
+
+@api_view(['GET'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
+def genders(request):
+    return JsonResponse(GenderSerializer(Gender.objects.all(), many=True).data, safe=False)
