@@ -57,13 +57,71 @@ def get_or_create_lover(user: User) -> Lover:
     return lover
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 @authentication_classes((TokenAuthentication,))
 @permission_classes((IsAuthenticated,))
 def my_profile(request):
     user = get_authenticated_user(request)
     lover = get_or_create_lover(user)
-    return JsonResponse(LoverSerializer(lover).data, safe=False)
+    if request.method == 'GET':
+        return JsonResponse(LoverSerializer(lover).data, safe=False)
+    elif request.method == 'PUT':
+        body = get_body(request)
+        name = body.get('name')
+        if name in [None, '']:
+            return JsonResponse(
+                {"name": "Veuillez saisir votre prénom"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        gender = body.get('gender')
+        if gender in [None, '']:
+            return JsonResponse(
+                {"gender": "Veuillez indiquer votre sexe"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        try:
+            gender = Gender.objects.get(pk=gender)
+        except Gender.DoesNotExist:
+            return JsonResponse(
+                {"gender": "Le sexe choisi est ambigu"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        birth_date = body.get("birth_date")
+        if birth_date in [None, '']:
+            return JsonResponse(
+                {"birth_date": "Veuillez saisir une date de naissance"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        city = body.get('city')
+        if city in [None, '']:
+            return JsonResponse(
+                {"city": "Veuillez saisir une ville"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        try:
+            city = City.objects.get(pk=city)
+        except City.DoesNotExist:
+            return JsonResponse(
+                {"city": "Ville invalide"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        description = body.get('description')
+        age_min = body.get('age_min')
+        age_max = body.get('age_max')
+        target_gender = body.get('target_gender')
+
+        # update lover
+        lover.name = name
+        lover.birth_date = birth_date
+        lover.gender = gender
+        lover.city = city
+        lover.description = description
+        lover.age_min = age_min
+        lover.age_max = age_max
+        lover.target_gender = target_gender
+
+        lover.save()
+        return JsonResponse(LoverSerializer(lover).data, safe=False)
 
 
 @api_view(['POST'])
