@@ -72,60 +72,60 @@ def register_user(request):
     username = body.get('username')
     if User.objects.filter(username=username).exists():
         return JsonResponse(
-            {"message": "Ce pseudo n'est pas disponible"},
+            {"username": "Ce pseudo n'est pas disponible"},
             status=status.HTTP_400_BAD_REQUEST
         )
     name = body.get('name')
     if name is None:
         return JsonResponse(
-            {"message": "Veuillez saisir votre prénom"},
+            {"name": "Veuillez saisir votre prénom"},
             status=status.HTTP_400_BAD_REQUEST
         )
     gender = body.get('gender')
     if gender is None:
         return JsonResponse(
-            {"message": "Veuillez saisir un sexe"},
+            {"gender": "Veuillez saisir un sexe"},
             statuts=status.HTTP_400_BAD_REQUEST
         )
     elif gender not in Gender.objects.all().values_list('code', flat=True):
         return JsonResponse(
-            {"message": "Le sexe choisi est ambigu"},
+            {"gender": "Le sexe choisi est ambigu"},
             status=status.HTTP_400_BAD_REQUEST
         )
     email = body.get('email')
     if email is None:
         return JsonResponse(
-            {"message": "Veuillez saisir une adresse email"},
+            {"email": "Veuillez saisir une adresse email"},
             statuts=status.HTTP_400_BAD_REQUEST
         )
     elif User.objects.filter(email=email).exists():
         return JsonResponse(
-            {"message": "Cet adresse email est déjà utilisée"},
+            {"email": "Cet adresse email est déjà utilisée"},
             status=status.HTTP_400_BAD_REQUEST
         )
     password = body.get('password')
     if password is None:
         return JsonResponse(
-            {"message": "Veuillez saisir un mot de passe"},
+            {"password": "Veuillez saisir un mot de passe"},
             statuts=status.HTTP_400_BAD_REQUEST
         )
     birthdate = body.get("birthdate")
     if birthdate is None:
         return JsonResponse(
-            {"message": "Veuillez saisir une date de naissance"},
+            {"birthdate": "Veuillez saisir une date de naissance"},
             statuts=status.HTTP_400_BAD_REQUEST
         )
     city = body.get('city')
     if city is None:
         return JsonResponse(
-            {"message": "Veuillez saisir une ville"},
+            {"city": "Veuillez saisir une ville"},
             status=status.HTTP_400_BAD_REQUEST
         )
     try:
         City.objects.get(pk=city)
     except City.DoesNotExist:
         return JsonResponse(
-            {"message": "Ville invalide"},
+            {"city": "Ville invalide"},
             statuts=status.HTTP_400_BAD_REQUEST
         )
 
