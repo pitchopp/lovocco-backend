@@ -180,13 +180,13 @@ def candidates(request):
 
 @api_view(['GET'])
 @authentication_classes((TokenAuthentication,))
-@permission_classes((IsAuthenticated,))
+# @permission_classes((IsAuthenticated,))
 def cities(request):
     return JsonResponse(CitySerializer(City.objects.all(), many=True).data, safe=False)
 
 
 @api_view(['GET'])
 @authentication_classes((TokenAuthentication,))
-@permission_classes((IsAuthenticated,))
+# @permission_classes((IsAuthenticated,))
 def genders(request):
     return JsonResponse(GenderSerializer(Gender.objects.all(), many=True).data, safe=False)
