@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -41,13 +41,13 @@ def get_or_create_lover(user: User) -> Lover:
         data = user.last_name.split(';')
         gender = Gender.objects.get(pk=int(data[0]))
         city = data[2]
-        birthdate = datetime.strptime(data[1], '%Y-%m-%d')
+        birth_date = datetime.strptime(data[1], '%Y-%m-%d').date()
         lover = Lover(
             user=user,
             name=user.first_name,
             gender=gender,
             city_id=int(city),
-            birth_date=birthdate,
+            birth_date=birth_date,
         )
         lover.target_gender = Gender.objects.exclude(id=gender.id).first()
         age = lover.get_age()
@@ -92,6 +92,7 @@ def my_profile(request):
                 {"birth_date": "Veuillez saisir une date de naissance"},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        birth_date = datetime.strptime(birth_date, '%Y-%m-%d').date()
         city = body.get('city')
         if city in [None, '']:
             return JsonResponse(
