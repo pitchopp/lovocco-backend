@@ -70,7 +70,7 @@ def my_profile(request):
 def register_user(request):
     body = get_body(request)
     username = body.get('username')
-    if username is None:
+    if username in [None, '']:
         return JsonResponse(
             {"username": "Veuillez choisir un identifiant"},
             status=status.HTTP_400_BAD_REQUEST
@@ -82,13 +82,13 @@ def register_user(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     name = body.get('name')
-    if name is None:
+    if name in [None, '']:
         return JsonResponse(
             {"name": "Veuillez saisir votre prénom"},
             status=status.HTTP_400_BAD_REQUEST
         )
     gender = body.get('gender')
-    if gender is None:
+    if gender in [None, '']:
         return JsonResponse(
             {"gender": "Veuillez indiquer votre sexe"},
             statuts=status.HTTP_400_BAD_REQUEST
@@ -99,7 +99,7 @@ def register_user(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     email = body.get('email')
-    if email is None:
+    if email in [None, '']:
         return JsonResponse(
             {"email": "Veuillez saisir une adresse email"},
             statuts=status.HTTP_400_BAD_REQUEST
@@ -110,19 +110,19 @@ def register_user(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     password = body.get('password')
-    if password is None:
+    if password in [None, '']:
         return JsonResponse(
             {"password": "Veuillez saisir un mot de passe"},
             statuts=status.HTTP_400_BAD_REQUEST
         )
     birthdate = body.get("birthdate")
-    if birthdate is None:
+    if birthdate in [None, '']:
         return JsonResponse(
             {"birthdate": "Veuillez saisir une date de naissance"},
             statuts=status.HTTP_400_BAD_REQUEST
         )
     city = body.get('city')
-    if city is None:
+    if city in [None, '']:
         return JsonResponse(
             {"city": "Veuillez saisir une ville"},
             status=status.HTTP_400_BAD_REQUEST
