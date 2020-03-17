@@ -93,7 +93,7 @@ def register_user(request):
             {"gender": "Veuillez indiquer votre sexe"},
             statuts=status.HTTP_400_BAD_REQUEST
         )
-    elif Gender.objects.filter(id=gender).exists():
+    elif not Gender.objects.filter(id=gender).exists():
         return JsonResponse(
             {"gender": "Le sexe choisi est ambigu"},
             status=status.HTTP_400_BAD_REQUEST
