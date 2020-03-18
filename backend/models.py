@@ -23,7 +23,7 @@ class City(models.Model):
 
 
 def get_image_path(instance, filename):
-    return os.path.join('photos', instance.lover.id, filename)
+    return os.path.join('photos', str(instance.lover.id), filename)
 
 
 class Lover(models.Model):
