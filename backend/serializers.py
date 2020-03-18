@@ -42,6 +42,6 @@ class LoverSerializer(serializers.ModelSerializer):
     def get_age(self, obj: Lover):
         return obj.get_age()
 
-    def get_photo(self, obj: Lover):
+    def get_photos(self, obj: Lover):
         return [x.get('image') for x in PhotoSerializer(obj.photos, many=True).data]
 
