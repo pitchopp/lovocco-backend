@@ -22,9 +22,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PhotoSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = Photo
         fields = 'image',
+
+    def get_image(self, obj: Photo):
+        return obj.image
 
 
 class LoverSerializer(serializers.ModelSerializer):
