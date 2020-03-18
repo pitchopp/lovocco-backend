@@ -32,7 +32,7 @@ class LoverSerializer(serializers.ModelSerializer):
     gender = GenderSerializer()
     target_gender = GenderSerializer()
     # user = UserSerializer()
-    photos = PhotoSerializer(many=True)
+    photos = serializers.SerializerMethodField()
     age = serializers.SerializerMethodField()
 
     class Meta:
