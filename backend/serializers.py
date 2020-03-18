@@ -29,7 +29,7 @@ class PhotoSerializer(serializers.ModelSerializer):
         fields = 'image',
 
     def get_image(self, obj: Photo):
-        return obj.image
+        return obj.image.path
 
 
 class LoverSerializer(serializers.ModelSerializer):
