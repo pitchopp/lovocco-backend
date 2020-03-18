@@ -49,5 +49,5 @@ class Lover(models.Model):
 
 
 class Photo(models.Model):
-    file_path = ImageField(upload_to=get_image_path, blank=True, null=True)
+    image = ImageField(upload_to=get_image_path)
     lover = ForeignKey(Lover, on_delete=models.CASCADE, related_name='photos')

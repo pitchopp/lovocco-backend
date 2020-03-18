@@ -1,24 +1,21 @@
-import json
-from datetime import datetime, date
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes, parser_classes
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+
 from backend.models import Lover, Gender, City
-from backend.serializers import LoverSerializer, UserSerializer, CitySerializer, GenderSerializer
+from backend.serializers import LoverSerializer, CitySerializer, GenderSerializer, PhotoSerializer
 
 
 def get_body(request) -> dict:
-    body_unicode = request.body.decode('utf-8')
-    if body_unicode:
-        body = json.loads(body_unicode)
-    else:
-        body = {}
-    return body
+    return request.data
 
 
 def get_authenticated_user(request) -> User:
@@ -278,3 +275,23 @@ def cities(request):
 # @permission_classes((IsAuthenticated,))
 def genders(request):
     return JsonResponse(GenderSerializer(Gender.objects.all(), many=True).data, safe=False)
+
+
+@api_view(['GET', 'POST'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
+@parser_classes([MultiPartParser, FormParser])
+def photos(request):
+    user = get_authenticated_user(request)
+    lover = get_or_create_lover(user)
+    if request.method == 'GET':
+        photos = lover.photos.all()
+        return Response(PhotoSerializer(photos, many=True).data)
+    elif request.method == 'POST':
+        data = request.data
+        photo_serializer = PhotoSerializer(data=data)
+        if photo_serializer.is_valid():
+            photo_serializer.save(lover=lover)
+            return Response(photo_serializer.data)
+        else:
+            return Response(photo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

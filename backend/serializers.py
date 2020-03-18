@@ -24,7 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = 'file_path'
+        fields = 'image',
 
 
 class LoverSerializer(serializers.ModelSerializer):
