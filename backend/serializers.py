@@ -28,9 +28,9 @@ class PhotoSerializer(serializers.ModelSerializer):
 
 
 class LoverSerializer(serializers.ModelSerializer):
-    city = CitySerializer()
-    gender = GenderSerializer()
-    target_gender = GenderSerializer()
+    # city = CitySerializer()
+    # gender = GenderSerializer()
+    # target_gender = GenderSerializer()
     # user = UserSerializer()
     photos = serializers.SerializerMethodField()
     age = serializers.SerializerMethodField()
