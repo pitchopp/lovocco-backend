@@ -22,14 +22,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PhotoSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
-
     class Meta:
         model = Photo
         fields = 'image',
-
-    def get_image(self, obj: Photo):
-        return obj.image.path
 
 
 class LoverSerializer(serializers.ModelSerializer):
@@ -46,4 +41,7 @@ class LoverSerializer(serializers.ModelSerializer):
 
     def get_age(self, obj: Lover):
         return obj.get_age()
+
+    def get_photo(self, obj: Lover):
+        return [x.get('image') for x in PhotoSerializer(obj.photos, many=True).data]
 
