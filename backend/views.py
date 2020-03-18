@@ -288,10 +288,11 @@ def photos(request):
         photos = lover.photos.all()
         return Response(PhotoSerializer(photos, many=True).data)
     elif request.method == 'POST':
+        lover.photos.all().delete()
         data = request.data
         photo_serializer = PhotoSerializer(data=data)
         if photo_serializer.is_valid():
             photo_serializer.save(lover=lover)
             return Response(photo_serializer.data)
         else:
-            return Response(photo_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(photo_serializer.errors, status=status.HTTP_418_IM_A_TEAPOT)
