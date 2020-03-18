@@ -5,3 +5,4 @@ from backend.models import *
 admin.site.register(City)
 admin.site.register(Gender)
 admin.site.register(Lover)
+admin.site.register(Photo)
