@@ -227,7 +227,8 @@ def like(request, lover_id):
     user = get_authenticated_user(request)
     lover = get_or_create_lover(user)
     lover.likes.add(lover_id)
-    return JsonResponse({"status": "ok"})
+    match = lover.likers.filter(id=lover_id).exists()
+    return JsonResponse({"match": match})
 
 
 @api_view(['POST'])
