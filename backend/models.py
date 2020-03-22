@@ -37,8 +37,8 @@ class Lover(models.Model):
     target_gender = ForeignKey(Gender, on_delete=models.SET_NULL, related_name='+', null=True)
     age_min = IntegerField(default=18, null=True)
     age_max = IntegerField(default=60, null=True)
-    likes = ManyToManyField('self', related_name='likers')
-    dislikes = ManyToManyField('self', related_name='dislikers')
+    likes = ManyToManyField('self', symmetrical=False, related_name='likers')
+    dislikes = ManyToManyField('self', symmetrical=False, related_name='dislikers')
 
     def get_age(self):
         today = datetime.today()
