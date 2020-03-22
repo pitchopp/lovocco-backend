@@ -305,5 +305,5 @@ def photos(request):
 def matches(request):
     user = get_authenticated_user(request)
     lover = get_or_create_lover(user)
-    matches = [x for x in lover.likes.all() if x in lover.likers.all()]
+    matches = [x for x in lover.likes.all().exclude(id=lover.id) if x in lover.likers.all()]
     return JsonResponse(LoverSerializer(matches, many=True).data, safe=False)
