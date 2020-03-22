@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/lovers/<int:lover_id>/like', views.like),
     path('api/lovers/<int:lover_id>/dislike', views.dislike),
     path('api/photos', views.photos),
+    path('api/matches', views.matches),
     # Authentication
     path('api/authenticate', obtain_auth_token),
     path('api/register', views.register_user)

@@ -297,3 +297,13 @@ def photos(request):
             return Response(photo_serializer.data)
         else:
             return Response(photo_serializer.errors, status=status.HTTP_418_IM_A_TEAPOT)
+
+
+@api_view(['GET'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
+def matches(request):
+    user = get_authenticated_user(request)
+    lover = get_or_create_lover(user)
+    matches = [x for x in lover.likes.all() if x in lover.likers.all()]
+    return JsonResponse(LoverSerializer(matches, many=True).data, safe=False)
