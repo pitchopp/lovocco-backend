@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from backend.models import Lover, City, Gender, Photo
+from lovocco import settings
 
 
 class CitySerializer(serializers.ModelSerializer):
@@ -24,7 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = 'image',
+        fields = 'id', 'image',
 
 
 class LoverSerializer(serializers.ModelSerializer):

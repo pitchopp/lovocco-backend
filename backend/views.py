@@ -289,7 +289,7 @@ def photos(request):
         photos = lover.photos.all()
         return Response(PhotoSerializer(photos, many=True).data)
     elif request.method == 'POST':
-        lover.photos.all().delete()
+        # lover.photos.all().delete()
         data = request.data
         photo_serializer = PhotoSerializer(data=data)
         if photo_serializer.is_valid():
