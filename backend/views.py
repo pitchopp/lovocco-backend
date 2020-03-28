@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 
-from backend.models import Lover, Gender, City
+from backend.models import Lover, Gender, City, Photo
 from backend.serializers import LoverSerializer, CitySerializer, GenderSerializer, PhotoSerializer
 
 
@@ -297,6 +297,17 @@ def photos(request):
             return Response(photo_serializer.data)
         else:
             return Response(photo_serializer.errors, status=status.HTTP_418_IM_A_TEAPOT)
+
+
+@api_view(['DELETE'])
+@authentication_classes((TokenAuthentication,))
+@permission_classes((IsAuthenticated,))
+def photo_id(request, photo_id):
+    try:
+        Photo.objects.get(pk=photo_id).delete()
+    except Photo.DoesNotExist:
+        return Response({"message": "photo not found"}, status=status.HTTP_404_NOT_FOUND)
+    return Response({"message": "photo deleted"}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
